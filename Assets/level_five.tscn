@@ -1,0 +1,360 @@
+[gd_scene load_steps=17 format=3 uid="uid://b8ckfqeytmv57"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_4ko6q"]
+[ext_resource type="PackedScene" uid="uid://b2sx72vfe6p3" path="res://player.tscn" id="2_m7077"]
+[ext_resource type="Script" path="res://PlayerMovementData.gd" id="3_dsyrp"]
+[ext_resource type="PackedScene" uid="uid://qxpiyog46lmf" path="res://level_completed.tscn" id="3_mxx5h"]
+[ext_resource type="PackedScene" uid="uid://c24f17q6x8wcs" path="res://level_tile_map.tscn" id="4_helrj"]
+[ext_resource type="AudioStream" uid="uid://d1drtoch28x5a" path="res://mixu_extended.mp3" id="5_j6x5o"]
+[ext_resource type="PackedScene" uid="uid://dsrffvpwrt3fk" path="res://spikes.tscn" id="7_k5w3t"]
+[ext_resource type="PackedScene" uid="uid://bi3ag1afav7g1" path="res://heart.tscn" id="8_fe8x8"]
+
+[sub_resource type="PackedScene" id="PackedScene_ubnic"]
+
+[sub_resource type="Resource" id="Resource_5nyxq"]
+script = ExtResource("3_dsyrp")
+speed = 200.0
+acceleration = 1500.0
+friction = 1000.0
+jump_velocity = -300.0
+gravity_scale = 1.0
+air_resistance = 200.0
+air_acceleration = 400.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_qbgm1"]
+font_size = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_3jm00"]
+font_size = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_nes11"]
+font_size = 6
+font_color = Color(0.976471, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_xai1e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/StartIn/CenterContainer/StartInLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Start in: 3"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/StartIn:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_btfom"]
+resource_name = "countdown"
+length = 3.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/StartIn/CenterContainer/StartInLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 1.1, 2.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": ["Start in: 3", "Start in: 2 ", "Start in: 1"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/StartIn:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lyjlk"]
+_data = {
+"RESET": SubResource("Animation_xai1e"),
+"countdown": SubResource("Animation_btfom")
+}
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_4ko6q")
+next_level = SubResource("PackedScene_ubnic")
+
+[node name="Player" parent="." instance=ExtResource("2_m7077")]
+position = Vector2(40, 160)
+movement_data = SubResource("Resource_5nyxq")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LevelCompleted" parent="CanvasLayer" instance=ExtResource("3_mxx5h")]
+visible = false
+
+[node name="StartIn" type="ColorRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.388235)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/StartIn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartInLabel" type="Label" parent="CanvasLayer/StartIn/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start in: 3"
+label_settings = SubResource("LabelSettings_qbgm1")
+vertical_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 4.0
+offset_bottom = 12.0
+grow_horizontal = 2
+
+[node name="LevelTimeLabel" type="Label" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_3jm00")
+
+[node name="LevelTimeLabel2" type="Label" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_nes11")
+
+[node name="LevelTileMap" parent="." instance=ExtResource("4_helrj")]
+layer_0/tile_data = PackedInt32Array(720898, 65536, 2, 720899, 65536, 2, 720900, 65536, 2, 655363, 65536, 0, 655362, 65536, 0, 655364, 65536, 0, 655365, 131072, 0, 720905, 65536, 3, 720904, 65536, 3, 720903, 65536, 3, 720902, 65536, 3, 720901, 327680, 3, 720906, 65536, 3, 720907, 65536, 3, 720908, 65536, 3, 720909, 65536, 3, 720910, 65536, 3, 720911, 65536, 3, 720912, 65536, 3, 720913, 65536, 3, 720914, 65536, 3, 720915, 65536, 3, 720916, 65536, 3, 720917, 65536, 3, 720918, 65536, 3, 720919, 65536, 3, 720920, 65536, 3, 720921, 65536, 3, 720922, 65536, 3, 720923, 65536, 3, 720924, 65536, 3, 720925, 65536, 3, 720926, 65536, 3, 720927, 65536, 3, 720928, 65536, 3, 720929, 65536, 3, 720930, 65536, 3, 720931, 65536, 3, 720932, 65536, 3, 720933, 65536, 3, 720934, 65536, 3, 720935, 65536, 3, 720936, 65536, 3, 720937, 65536, 3, 720938, 65536, 3, 720939, 65536, 3, 720940, 65536, 3, 720941, 65536, 3, 720942, 65536, 3, 720943, 65536, 3, 720944, 65536, 3, 720945, 65536, 3, 720946, 65536, 3, 720947, 65536, 3, 720948, 65536, 3, 720949, 65536, 3, 720950, 65536, 3, 720951, 65536, 3, 720952, 65536, 3, 720953, 65536, 3, 720954, 65536, 3, 720955, 393216, 3, 720956, 65536, 2, 720957, 65536, 2, 655421, 65536, 0, 655419, 0, 0, 655420, 65536, 0, 524296, 0, 3, 524297, 131072, 3, 393228, 0, 3, 393229, 131072, 3, 131087, 0, 3, 131088, 131072, 3, 327698, 0, 3, 327699, 131072, 3, 524309, 0, 3, 524310, 131072, 3, 393241, 0, 3, 393242, 131072, 3, 262172, 196608, 3, 196639, 196608, 3, 131106, 196608, 3, 262181, 0, 3, 262182, 131072, 3, 589865, 0, 3, 589866, 131072, 3, 327725, 0, 3, 327726, 131072, 3, 131121, 0, 3, 131122, 131072, 3, 655361, 0, 0, 720897, 0, 2, 720958, 65536, 2, 655422, 65536, 0, 655423, 131072, 0, 720959, 131072, 2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_lyjlk")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_j6x5o")
+autoplay = true
+
+[node name="Spikes" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(96, 176)
+
+[node name="Spikes2" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(112, 176)
+
+[node name="Spikes3" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(128, 176)
+
+[node name="Spikes4" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(144, 176)
+
+[node name="Spikes5" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(160, 176)
+
+[node name="Spikes6" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(176, 176)
+
+[node name="Spikes7" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(192, 176)
+
+[node name="Spikes8" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(208, 176)
+
+[node name="Spikes9" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(224, 176)
+
+[node name="Spikes10" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(240, 176)
+
+[node name="Spikes11" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(256, 176)
+
+[node name="Spikes12" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(272, 176)
+
+[node name="Spikes13" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(288, 176)
+
+[node name="Spikes14" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(304, 176)
+
+[node name="Spikes15" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(320, 176)
+
+[node name="Spikes16" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(336, 176)
+
+[node name="Spikes17" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(352, 176)
+
+[node name="Spikes18" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(368, 176)
+
+[node name="Spikes19" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(384, 176)
+
+[node name="Spikes20" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(400, 176)
+
+[node name="Spikes21" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(416, 176)
+
+[node name="Spikes22" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(432, 176)
+
+[node name="Spikes23" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(448, 176)
+
+[node name="Spikes24" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(464, 176)
+
+[node name="Spikes25" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(480, 176)
+
+[node name="Spikes26" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(496, 176)
+
+[node name="Spikes27" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(512, 176)
+
+[node name="Spikes28" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(528, 176)
+
+[node name="Spikes29" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(544, 176)
+
+[node name="Spikes30" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(560, 176)
+
+[node name="Spikes31" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(576, 176)
+
+[node name="Spikes32" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(592, 176)
+
+[node name="Spikes33" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(608, 176)
+
+[node name="Spikes34" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(624, 176)
+
+[node name="Spikes35" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(640, 176)
+
+[node name="Spikes36" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(656, 176)
+
+[node name="Spikes37" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(672, 176)
+
+[node name="Spikes38" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(688, 176)
+
+[node name="Spikes39" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(704, 176)
+
+[node name="Spikes40" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(720, 176)
+
+[node name="Spikes41" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(736, 176)
+
+[node name="Spikes42" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(752, 176)
+
+[node name="Spikes43" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(768, 176)
+
+[node name="Spikes44" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(784, 176)
+
+[node name="Spikes45" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(800, 176)
+
+[node name="Spikes46" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(816, 176)
+
+[node name="Spikes47" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(832, 176)
+
+[node name="Spikes48" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(848, 176)
+
+[node name="Spikes49" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(800, 176)
+
+[node name="Spikes50" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(816, 176)
+
+[node name="Spikes51" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(864, 176)
+
+[node name="Spikes53" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(880, 176)
+
+[node name="Spikes54" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(896, 176)
+
+[node name="Spikes55" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(912, 176)
+
+[node name="Spikes56" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(928, 176)
+
+[node name="Spikes52" parent="." instance=ExtResource("7_k5w3t")]
+position = Vector2(848, 176)
+
+[node name="Heart" parent="." instance=ExtResource("8_fe8x8")]
+position = Vector2(144, 104)
+
+[node name="Heart2" parent="." instance=ExtResource("8_fe8x8")]
+position = Vector2(256, 8)
+
+[node name="Heart3" parent="." instance=ExtResource("8_fe8x8")]
+position = Vector2(416, 64)
+
+[node name="Heart4" parent="." instance=ExtResource("8_fe8x8")]
+position = Vector2(672, 120)
+
+[node name="Heart5" parent="." instance=ExtResource("8_fe8x8")]
+position = Vector2(888, 48)
+
+[node name="Heart6" parent="." instance=ExtResource("8_fe8x8")]
+position = Vector2(984, 128)
+
+[node name="EndLevel" type="Timer" parent="."]
+wait_time = 25.0
+one_shot = true
+autostart = true
+
+[connection signal="next_level" from="CanvasLayer/LevelCompleted" to="." method="_on_level_completed_next_level"]
+[connection signal="retry" from="CanvasLayer/LevelCompleted" to="." method="_on_level_completed_retry"]

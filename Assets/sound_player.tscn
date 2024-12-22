@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dph1sjett6vmq"]
+
+[ext_resource type="Script" path="res://sound_player.gd" id="1_148bo"]
+[ext_resource type="AudioStream" uid="uid://6t5ik1i0otxj" path="res://pick2.wav" id="2_hvqhp"]
+[ext_resource type="AudioStream" uid="uid://ckutfba8x47oh" path="res://sound.wav" id="3_pted6"]
+[ext_resource type="AudioStream" uid="uid://k53sruxtl5bl" path="res://hurt.wav" id="4_uesc4"]
+[ext_resource type="AudioStream" uid="uid://bkf05mspgh6ll" path="res://ANMLCat_Meow cat 2 (ID 1890)_BSB.wav" id="5_e8m5y"]
+
+[node name="SoundPlayer" type="Node"]
+process_mode = 3
+script = ExtResource("1_148bo")
+
+[node name="AudioPlayers" type="Node" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AudioPlayers"]
+stream = ExtResource("2_hvqhp")
+volume_db = -6.0
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="AudioPlayers"]
+stream = ExtResource("3_pted6")
+volume_db = -6.0
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="AudioPlayers"]
+stream = ExtResource("4_uesc4")
+volume_db = -6.0
+
+[node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="AudioPlayers"]
+stream = ExtResource("5_e8m5y")
