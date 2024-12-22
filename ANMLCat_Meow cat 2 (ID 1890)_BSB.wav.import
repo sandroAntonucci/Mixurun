@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bkf05mspgh6ll"
+path="res://.godot/imported/ANMLCat_Meow cat 2 (ID 1890)_BSB.wav-f147f92fe8e27179542b7964d2f002ce.sample"
+
+[deps]
+
+source_file="res://ANMLCat_Meow cat 2 (ID 1890)_BSB.wav"
+dest_files=["res://.godot/imported/ANMLCat_Meow cat 2 (ID 1890)_BSB.wav-f147f92fe8e27179542b7964d2f002ce.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
